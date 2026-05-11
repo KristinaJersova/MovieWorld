@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import movieRoutes from "../src/routes/movieRoutes.js";
+import directorRoutes from "../src/routes/direktorRoutes.js";
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/movies", movieRoutes);
+app.use("/api/directors", directorRoutes);
 
 const PORT = process.env.PORT || 3000;
 
