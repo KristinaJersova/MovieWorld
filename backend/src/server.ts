@@ -3,6 +3,9 @@ import cors from "cors";
 import dotenv from "dotenv";
 import movieRoutes from "../src/routes/movieRoutes.js";
 import directorRoutes from "../src/routes/direktorRoutes.js";
+import actorRoutes from "./routes/actorRoutes.js";
+import genreRoutes from "./routes/genreRoutes.js";
+import movieRelationRoutes from "./routes/movieRelationRoutes.js";
 
 dotenv.config();
 
@@ -19,6 +22,9 @@ app.get("/", (req: Request, res: Response) => {
 
 app.use("/api/movies", movieRoutes);
 app.use("/api/directors", directorRoutes);
+app.use("/api/actors", actorRoutes);
+app.use("/api/genres", genreRoutes);
+app.use("/api/movies", movieRelationRoutes);
 
 const PORT = process.env.PORT || 3000;
 
