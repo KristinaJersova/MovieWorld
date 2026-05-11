@@ -1,0 +1,108 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas  = ["movie_world"]
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  createdAt DateTime @default(now())
+
+  @@schema("movie_world")
+}
+
+model Director {
+  id     Int     @id @default(autoincrement())
+  name   String
+  movies Movie[]
+
+  @@schema("movie_world")
+}
+
+model Actor {
+  id     Int          @id @default(autoincrement())
+  name   String
+  movies MovieActor[]
+
+  @@schema("movie_world")
+}
+
+model Genre {
+  id     Int          @id @default(autoincrement())
+  name   String
+  movies MovieGenre[]
+
+  @@schema("movie_world")
+}
+
+model Rating {
+  id     Int           @id @default(autoincrement())
+  rating Float
+  votes  Int
+  viewer String
+  movies MovieRating[]
+
+  @@schema("movie_world")
+}
+
+model Movie {
+  id          Int    @id @default(autoincrement())
+  title       String
+  year        Int
+  description String
+  runtime     Int
+  country     String
+  budget      Float
+
+  directorId Int
+  director   Director @relation(fields: [directorId], references: [id])
+
+  actors  MovieActor[]
+  genres  MovieGenre[]
+  ratings MovieRating[]
+
+  @@schema("movie_world")
+}
+
+model MovieActor {
+  id Int @id @default(autoincrement())
+
+  movieId Int
+  actorId Int
+
+  movie Movie @relation(fields: [movieId], references: [id])
+  actor Actor @relation(fields: [actorId], references: [id])
+
+  @@schema("movie_world")
+}
+
+model MovieGenre {
+  id Int @id @default(autoincrement())
+
+  movieId Int
+  genreId Int
+
+  movie Movie @relation(fields: [movieId], references: [id])
+  genre Genre @relation(fields: [genreId], references: [id])
+
+  @@schema("movie_world")
+}
+
+model MovieRating {
+  id Int @id @default(autoincrement())
+
+  movieId  Int
+  ratingId Int
+
+  movie  Movie  @relation(fields: [movieId], references: [id])
+  rating Rating @relation(fields: [ratingId], references: [id])
+
+  @@schema("movie_world")
+}
