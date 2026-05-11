@@ -6,6 +6,7 @@ import directorRoutes from "../src/routes/direktorRoutes.js";
 import actorRoutes from "./routes/actorRoutes.js";
 import genreRoutes from "./routes/genreRoutes.js";
 import movieRelationRoutes from "./routes/movieRelationRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 
 dotenv.config();
 
@@ -25,6 +26,7 @@ app.use("/api/directors", directorRoutes);
 app.use("/api/actors", actorRoutes);
 app.use("/api/genres", genreRoutes);
 app.use("/api/movies", movieRelationRoutes);
+app.use("/api/ratings", ratingRoutes);
 
 const PORT = process.env.PORT || 3000;
 
