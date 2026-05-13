@@ -8,6 +8,7 @@ import genreRoutes from "./routes/genreRoutes.js";
 import movieRelationRoutes from "./routes/movieRelationRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import omdbRoutes from "./routes/omdbRoutes.js";
 
 dotenv.config();
 
@@ -29,6 +30,8 @@ app.use("/api/genres", genreRoutes);
 app.use("/api/movies", movieRelationRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use("/api/omdb", omdbRoutes);
 
 const PORT = process.env.PORT || 3000;
 
