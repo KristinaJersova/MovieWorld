@@ -20,7 +20,7 @@ model User {
 
 model Director {
   id     Int     @id @default(autoincrement())
-  name   String
+  name   String  @unique
   movies Movie[]
 
   @@schema("movie_world")
@@ -28,7 +28,7 @@ model Director {
 
 model Actor {
   id     Int          @id @default(autoincrement())
-  name   String
+  name   String       @unique
   movies MovieActor[]
 
   @@schema("movie_world")
@@ -36,7 +36,7 @@ model Actor {
 
 model Genre {
   id     Int          @id @default(autoincrement())
-  name   String
+  name   String       @unique
   movies MovieGenre[]
 
   @@schema("movie_world")
