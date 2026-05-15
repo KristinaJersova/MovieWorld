@@ -14,6 +14,8 @@ import omdbRoutes from "./routes/omdbRoutes.js";
 import swaggerUi from "swagger-ui-express";
 import { swaggerSpec } from "./swagger.js";
 
+import { errorMiddleware } from "./middleware/errorMiddleware.js";
+
 dotenv.config();
 
 const app = express();
@@ -37,6 +39,8 @@ app.use("/api/movies", movieRelationRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/omdb", omdbRoutes);
+
+app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
 
