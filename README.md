@@ -97,7 +97,8 @@ MovieWorld/
 │   │   ├── prisma/
 │   │   ├── routes/
 │   │   ├── validators/
-│   │   └── server.ts
+│   │   ├── server.ts
+│   │   └── swagger.ts
 │
 ├── frontend/
 │   ├── src/
