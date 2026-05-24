@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
+  id        Int                @id @default(autoincrement())
+  username  String             @unique
+  email     String             @unique
   password  String
-  role      String   @default("user")
-  createdAt DateTime @default(now())
+  role      String             @default("user")
+  createdAt DateTime           @default(now())
+  views     MovieViewHistory[]
 
   @@schema("movie_world")
 }
@@ -23,6 +24,7 @@ model Director {
   name   String  @unique
   movies Movie[]
 
+  @@index([name], map: "idx_director_name")
   @@schema("movie_world")
 }
 
@@ -31,6 +33,7 @@ model Actor {
   name   String       @unique
   movies MovieActor[]
 
+  @@index([name], map: "idx_actor_name")
   @@schema("movie_world")
 }
 
@@ -39,6 +42,7 @@ model Genre {
   name   String       @unique
   movies MovieGenre[]
 
+  @@index([name], map: "idx_genre_name")
   @@schema("movie_world")
 }
 
@@ -53,56 +57,81 @@ model Rating {
 }
 
 model Movie {
-  id          Int    @id @default(autoincrement())
+  id          Int                @id @default(autoincrement())
   title       String
   year        Int
   description String
   runtime     Int
   country     String
   budget      Float
+  directorId  Int
+  director    Director           @relation(fields: [directorId], references: [id])
+  actors      MovieActor[]
+  genres      MovieGenre[]
+  ratings     MovieRating[]
+  views       MovieViewHistory[]
 
-  directorId Int
-  director   Director @relation(fields: [directorId], references: [id])
-
-  actors  MovieActor[]
-  genres  MovieGenre[]
-  ratings MovieRating[]
-
+  @@index([directorId], map: "idx_movie_director_id")
+  @@index([title], map: "idx_movie_title")
+  @@index([year], map: "idx_movie_year")
   @@schema("movie_world")
 }
 
 model MovieActor {
-  id Int @id @default(autoincrement())
-
+  id      Int   @id @default(autoincrement())
   movieId Int
   actorId Int
-
-  movie Movie @relation(fields: [movieId], references: [id])
-  actor Actor @relation(fields: [actorId], references: [id])
+  actor   Actor @relation(fields: [actorId], references: [id])
+  movie   Movie @relation(fields: [movieId], references: [id])
 
   @@schema("movie_world")
 }
 
 model MovieGenre {
-  id Int @id @default(autoincrement())
-
+  id      Int   @id @default(autoincrement())
   movieId Int
   genreId Int
-
-  movie Movie @relation(fields: [movieId], references: [id])
-  genre Genre @relation(fields: [genreId], references: [id])
+  genre   Genre @relation(fields: [genreId], references: [id])
+  movie   Movie @relation(fields: [movieId], references: [id])
 
   @@schema("movie_world")
 }
 
 model MovieRating {
-  id Int @id @default(autoincrement())
-
+  id       Int    @id @default(autoincrement())
   movieId  Int
   ratingId Int
+  movie    Movie  @relation(fields: [movieId], references: [id])
+  rating   Rating @relation(fields: [ratingId], references: [id])
 
-  movie  Movie  @relation(fields: [movieId], references: [id])
-  rating Rating @relation(fields: [ratingId], references: [id])
+  @@schema("movie_world")
+}
+
+model MovieViewHistory {
+  id       Int       @id @default(autoincrement())
+  userId   Int
+  movieId  Int
+  viewedAt DateTime? @default(now()) @db.Timestamp(6)
+  movie    Movie     @relation(fields: [movieId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_movie_view_movie")
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_movie_view_user")
+
+  @@schema("movie_world")
+}
+
+model movie_delete_log {
+  id          Int       @id @default(autoincrement())
+  movie_id    Int?
+  movie_title String?
+  deleted_at  DateTime? @default(now()) @db.Timestamp(6)
+
+  @@schema("movie_world")
+}
+
+model movie_log {
+  id          Int       @id @default(autoincrement())
+  movie_title String?
+  movie_year  Int?
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
 
   @@schema("movie_world")
 }
