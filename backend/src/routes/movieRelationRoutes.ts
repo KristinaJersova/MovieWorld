@@ -1,6 +1,6 @@
 import { Router } from "express";
 import prisma from "../prisma/prisma.js";
-import { authMiddleware } from "../middleware/authMiddleware.js";
+import {authMiddleware,AuthRequest} from "../middleware/authMiddleware.js";
 import { roleMiddleware } from "../middleware/roleMiddleware.js";
 
 const router = Router();
@@ -81,5 +81,26 @@ router.post(
     }
   }
 );
+
+router.post("/:movieId/view", authMiddleware, async (req: AuthRequest, res) => {
+  try {
+    const movieId = Number(req.params.movieId);
+    const userId = req.user!.id;
+
+    const view = await prisma.movieViewHistory.create({
+      data: {
+        movieId,
+        userId,
+      },
+    });
+
+    res.status(201).json({
+      message: "Movie view saved",
+      view,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error saving movie view", error });
+  }
+});
 
 export default router;
