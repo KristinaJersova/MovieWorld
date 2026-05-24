@@ -16,6 +16,8 @@ import { swaggerSpec } from "./swagger.js";
 
 import { errorMiddleware } from "./middleware/errorMiddleware.js";
 
+import userRoutes from "./routes/userRoutes.js";
+
 dotenv.config();
 
 const app = express();
@@ -39,7 +41,7 @@ app.use("/api/movies", movieRelationRoutes);
 app.use("/api/ratings", ratingRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/omdb", omdbRoutes);
-
+app.use("/api/users", userRoutes);
 app.use(errorMiddleware);
 
 const PORT = process.env.PORT || 3000;
