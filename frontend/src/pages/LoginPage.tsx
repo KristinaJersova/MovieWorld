@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth";
 
 export function LoginPage() {
@@ -13,30 +13,36 @@ export function LoginPage() {
 
     const data = await loginUser({ email, password });
 
-    localStorage.setItem("accessToken", data.accessToken);
+    localStorage.setItem("accessToken", data.token ?? data.accessToken);
 
     navigate("/");
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Login</h1>
+    <main className="auth-page">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <h1>Login</h1>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-      <button type="submit">Login</button>
-    </form>
+        <button type="submit">Login</button>
+
+        <p>
+          No account? <Link to="/register">Register</Link>
+        </p>
+      </form>
+    </main>
   );
 }

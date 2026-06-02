@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { api } from "../api/client";
+import { registerUser } from "../api/auth";
 
 export function RegisterPage() {
   const navigate = useNavigate();
@@ -12,21 +12,20 @@ export function RegisterPage() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const { data } = await api.post("/auth/register", {
+    await registerUser({
       username,
       email,
       password,
     });
 
-    localStorage.setItem("accessToken", data.accessToken);
-    navigate("/");
+    navigate("/login");
   }
 
   return (
-    <main>
-      <h1>Register</h1>
+    <main className="auth-page">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <h1>Register</h1>
 
-      <form onSubmit={handleSubmit}>
         <input
           placeholder="Username"
           value={username}
@@ -48,11 +47,11 @@ export function RegisterPage() {
         />
 
         <button type="submit">Create account</button>
-      </form>
 
-      <p>
-        Already have account? <Link to="/login">Login</Link>
-      </p>
+        <p>
+          Already have account? <Link to="/login">Login</Link>
+        </p>
+      </form>
     </main>
   );
 }
