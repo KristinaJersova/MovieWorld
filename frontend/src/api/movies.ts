@@ -6,7 +6,8 @@ const mockMovies: Movie[] = [
     id: "1",
     title: "Interstellar",
     year: 2014,
-    posterUrl: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
     rating: 8.7,
     genres: ["Sci-Fi", "Drama"],
     description: "A team travels through a wormhole in space.",
@@ -15,10 +16,12 @@ const mockMovies: Movie[] = [
     id: "2",
     title: "Fight Club",
     year: 1999,
-    posterUrl: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
+    posterUrl:
+      "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
     rating: 8.8,
     genres: ["Drama"],
-    description: "An insomniac office worker forms an underground fight club.",
+    description:
+      "An insomniac office worker forms an underground fight club.",
   },
 ];
 
@@ -39,12 +42,15 @@ export async function getMoviesFeed(): Promise<Movie[]> {
     }
 
     return mockMovies;
-  } catch {
+  } catch (error) {
+    console.error(error);
     return mockMovies;
   }
 }
 
-export async function getMovieById(id: string): Promise<Movie | undefined> {
+export async function getMovieById(
+  id: string
+): Promise<Movie | undefined> {
   try {
     const response = await api.get(`/movies/${id}`);
     return response.data;
@@ -53,7 +59,9 @@ export async function getMovieById(id: string): Promise<Movie | undefined> {
   }
 }
 
-export async function searchMovies(query: string): Promise<Movie[]> {
+export async function searchMovies(
+  query: string
+): Promise<Movie[]> {
   const movies = await getMoviesFeed();
 
   return movies.filter((movie) =>
