@@ -7,27 +7,57 @@ export function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const data = await loginUser({ email, password });
+    try {
+      const data = await loginUser({
+        email,
+        password,
+      });
 
-    localStorage.setItem("accessToken", data.token ?? data.accessToken);
+      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-    navigate("/");
+      navigate("/");
+    } catch (err) {
+      setError("Invalid email or password");
+      console.error(err);
+    }
   }
 
   return (
     <main className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
+        <Link to="/" className="auth-logo">
+          MovieWorld
+        </Link>
+
         <h1>Login</h1>
+
+        <Link to="/" className="back-home">
+          ← Back to Movies
+        </Link>
+
+        {error && (
+          <div
+            style={{
+              color: "#ff6b6b",
+              marginBottom: "10px",
+            }}
+          >
+            {error}
+          </div>
+        )}
 
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
+          required
         />
 
         <input
@@ -35,6 +65,7 @@ export function LoginPage() {
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          required
         />
 
         <button type="submit">Login</button>

@@ -69,6 +69,7 @@ a {
 
 .profile-dropdown {
   position: relative;
+  padding-bottom: 10px;
 }
 
 .profile-button {
@@ -76,24 +77,28 @@ a {
   border: none;
   padding: 8px 12px;
   border-radius: 6px;
+  color: #101418;
+  font-weight: bold;
   cursor: pointer;
 }
 
 .dropdown-menu {
   display: none;
   position: absolute;
-  top: 36px;
+  top: 34px;
   right: 0;
   background: #1c2229;
   border: 1px solid #2c3440;
+  border-radius: 8px;
   padding: 12px;
   min-width: 140px;
+  z-index: 100;
 }
 
 .profile-dropdown:hover .dropdown-menu {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
 }
 
 .search-input {
@@ -232,3 +237,15 @@ a {
   flex-direction: column;
   gap: 6px;
 }
+
+.back-home {
+  color: #00c030;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 12px;
+}
+
+.back-home:hover {
+  text-decoration: underline;
+}
+

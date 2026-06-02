@@ -25,6 +25,9 @@ export function RegisterPage() {
     <main className="auth-page">
       <form className="auth-card" onSubmit={handleSubmit}>
         <h1>Register</h1>
+        <Link to="/" className="back-home">
+        ← Back to Movies
+        </Link>
 
         <input
           placeholder="Username"

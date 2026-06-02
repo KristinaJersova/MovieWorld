@@ -1,14 +1,31 @@
+type User = {
+  id: number;
+  username: string;
+  email: string;
+  role: string;
+};
+
 export function ProfilePage() {
+  const userString = localStorage.getItem("user");
+  const user: User | null = userString ? JSON.parse(userString) : null;
+
+  if (!user) {
+    return <p>User not found</p>;
+  }
+
   return (
     <section>
       <h1>Profile</h1>
 
       <div className="profile-card">
-        <div className="profile-avatar">U</div>
+        <div className="profile-avatar">
+          {user.username[0].toUpperCase()}
+        </div>
 
         <div>
-          <h2>Demo User</h2>
-          <p>MovieWorld member</p>
+          <h2>{user.username}</h2>
+          <p>{user.email}</p>
+          <p>Role: {user.role}</p>
         </div>
       </div>
 
@@ -30,4 +47,4 @@ export function ProfilePage() {
       </div>
     </section>
   );
-}
+}   
