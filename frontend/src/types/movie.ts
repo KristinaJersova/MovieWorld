@@ -1,8 +1,41 @@
-// types/movie.ts
 export type Movie = {
-  id: string;
+  id: number;
   title: string;
-  year?: number;
-  posterUrl?: string;
-  rating?: number;
+  year: number;
+  description: string;
+  runtime: number;
+  country: string;
+  budget: number;
+  directorId: number;
+
+  director?: {
+    id: number;
+    name: string;
+  };
+
+  actors?: {
+    id: number;
+    actor: {
+      id: number;
+      name: string;
+    };
+  }[];
+
+  genres?: {
+    id: number;
+    genre: {
+      id: number;
+      name: string;
+    };
+  }[];
+
+  ratings?: {
+    id: number;
+    rating: {
+      id: number;
+      rating: number;
+      votes: number;
+      viewer: string;
+    };
+  }[];
 };
