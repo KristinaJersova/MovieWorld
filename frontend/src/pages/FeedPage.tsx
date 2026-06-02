@@ -6,9 +6,12 @@ import { MovieCard } from "../components/MovieCard";
 export function FeedPage() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getMoviesFeed().then(setMovies);
+    getMoviesFeed()
+      .then(setMovies)
+      .finally(() => setLoading(false));
   }, []);
 
   async function handleSearch(value: string) {
@@ -24,11 +27,16 @@ export function FeedPage() {
     setMovies(results);
   }
 
+  if (loading) {
+    return <p>Loading movies...</p>;
+  }
+
   return (
     <section>
       <h1>MovieWorld</h1>
 
       <input
+        className="search-input"
         placeholder="Search movies..."
         value={search}
         onChange={(e) => handleSearch(e.target.value)}
@@ -36,7 +44,7 @@ export function FeedPage() {
 
       {movies.length === 0 && <p>No movies found</p>}
 
-      <div>
+      <div className="movie-grid">
         {movies.map((movie) => (
           <MovieCard key={movie.id} movie={movie} />
         ))}

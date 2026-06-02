@@ -19,7 +19,7 @@ const router = Router();
  *         description: List of movies
  */
 router.get("/", getMovies);
-
+router.get("/feed", getMovies);
 /**
  * @swagger
  * /api/movies/{id}:
