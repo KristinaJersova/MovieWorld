@@ -65,6 +65,7 @@ model Movie {
   country     String
   budget      Float
   directorId  Int
+  poster      String?
   director    Director           @relation(fields: [directorId], references: [id])
   actors      MovieActor[]
   genres      MovieGenre[]
