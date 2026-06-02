@@ -3,7 +3,74 @@ import prisma from "../prisma/prisma.js";
 
 export const getMovies = async (req: Request, res: Response) => {
   try {
+    const {
+      search,
+      year,
+      genre,
+      sort = "id",
+      order = "asc",
+      page = "1",
+      limit = "10",
+    } = req.query;
+
+    const pageNumber = Number(page);
+    const limitNumber = Number(limit);
+    const skip = (pageNumber - 1) * limitNumber;
+
+    const where: any = {
+      AND: [
+        search
+          ? {
+              OR: [
+                {
+                  title: {
+                    contains: String(search),
+                    mode: "insensitive",
+                  },
+                },
+                {
+                  description: {
+                    contains: String(search),
+                    mode: "insensitive",
+                  },
+                },
+              ],
+            }
+          : {},
+        year
+          ? {
+              year: Number(year),
+            }
+          : {},
+        genre
+          ? {
+              genres: {
+                some: {
+                  genre: {
+                    name: {
+                      contains: String(genre),
+                      mode: "insensitive",
+                    },
+                  },
+                },
+              },
+            }
+          : {},
+      ],
+    };
+
+    let orderBy: any = { id: order };
+
+    if (sort === "title") orderBy = { title: order };
+    if (sort === "year") orderBy = { year: order };
+    if (sort === "runtime") orderBy = { runtime: order };
+    if (sort === "budget") orderBy = { budget: order };
+
     const movies = await prisma.movie.findMany({
+      where,
+      skip,
+      take: limitNumber,
+      orderBy,
       include: {
         director: true,
         actors: { include: { actor: true } },
@@ -12,7 +79,17 @@ export const getMovies = async (req: Request, res: Response) => {
       },
     });
 
-    res.json(movies);
+    const total = await prisma.movie.count({ where });
+
+    res.json({
+      data: movies,
+      pagination: {
+        total,
+        page: pageNumber,
+        limit: limitNumber,
+        totalPages: Math.ceil(total / limitNumber),
+      },
+    });
   } catch (error) {
     res.status(500).json({ message: "Error loading movies", error });
   }
@@ -44,7 +121,8 @@ export const getMovieById = async (req: Request, res: Response) => {
 
 export const createMovie = async (req: Request, res: Response) => {
   try {
-    const { title, year, description, runtime, country, budget, directorId } = req.body;
+    const { title, year, description, runtime, country, budget, directorId } =
+      req.body;
 
     const movie = await prisma.movie.create({
       data: {
@@ -67,7 +145,8 @@ export const createMovie = async (req: Request, res: Response) => {
 export const updateMovie = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const { title, year, description, runtime, country, budget, directorId } = req.body;
+    const { title, year, description, runtime, country, budget, directorId } =
+      req.body;
 
     const movie = await prisma.movie.update({
       where: { id },
