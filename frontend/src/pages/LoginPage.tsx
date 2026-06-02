@@ -1,5 +1,5 @@
 import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { loginUser } from "../api/auth";
 
 export function LoginPage() {
@@ -7,36 +7,73 @@ export function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
 
-    const data = await loginUser({ email, password });
+    try {
+      const data = await loginUser({
+        email,
+        password,
+      });
 
-    localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("accessToken", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
-    navigate("/");
+      navigate("/");
+    } catch (err) {
+      setError("Invalid email or password");
+      console.error(err);
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Login</h1>
+    <main className="auth-page">
+      <form className="auth-card" onSubmit={handleSubmit}>
+        <Link to="/" className="auth-logo">
+          MovieWorld
+        </Link>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <h1>Login</h1>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <Link to="/" className="back-home">
+          ← Back to Movies
+        </Link>
 
-      <button type="submit">Login</button>
-    </form>
+        {error && (
+          <div
+            style={{
+              color: "#ff6b6b",
+              marginBottom: "10px",
+            }}
+          >
+            {error}
+          </div>
+        )}
+
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+
+        <button type="submit">Login</button>
+
+        <p>
+          No account? <Link to="/register">Register</Link>
+        </p>
+      </form>
+    </main>
   );
 }
