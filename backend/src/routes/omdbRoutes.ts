@@ -78,6 +78,7 @@ router.post(
           runtime,
           country: data.Country,
           budget,
+          poster: data.Poster !== "N/A" ? data.Poster : null,
           directorId: director.id,
         },
       });
