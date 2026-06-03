@@ -40,7 +40,6 @@ export function MoviePage() {
     if (!movie) return;
 
     const ratings = JSON.parse(localStorage.getItem("ratings") || "{}");
-
     ratings[movie.id] = value;
 
     localStorage.setItem("ratings", JSON.stringify(ratings));
@@ -92,7 +91,15 @@ export function MoviePage() {
 
   return (
     <section className="movie-details">
-      <div className="movie-details-poster">{movie.title[0]}</div>
+      {movie.poster ? (
+        <img
+          className="movie-details-poster-image"
+          src={movie.poster}
+          alt={movie.title}
+        />
+      ) : (
+        <div className="movie-details-poster">{movie.title[0]}</div>
+      )}
 
       <div>
         <h1>{movie.title}</h1>

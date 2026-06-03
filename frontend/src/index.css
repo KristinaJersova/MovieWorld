@@ -331,3 +331,25 @@ a {
   padding: 14px;
   margin-top: 10px;
 }
+
+.movie-details-poster-image {
+  width: 260px;
+  max-height: 390px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.movie-poster-placeholder img,
+.movie-details-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: inherit;
+}
+.movie-poster {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}

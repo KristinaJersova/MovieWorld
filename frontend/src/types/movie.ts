@@ -3,12 +3,12 @@ export type Movie = {
   title: string;
   year: number;
   poster?: string | null;
+
   description: string;
   runtime: number;
   country: string;
   budget: number;
   directorId: number;
-
 
   director?: {
     id: number;
