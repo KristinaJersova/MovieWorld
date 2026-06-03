@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { WatchlistPage } from "./pages/WatchlistPage";
 
 export default function App() {
   return (
@@ -19,7 +20,16 @@ export default function App() {
             </Layout>
           }
         />
-
+        <Route
+          path="/watchlist"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <WatchlistPage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
         <Route
           path="/movies/:id"
           element={

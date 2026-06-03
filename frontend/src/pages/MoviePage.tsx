@@ -33,7 +33,10 @@ export function MoviePage() {
     const watchlist = JSON.parse(localStorage.getItem("watchlist") || "[]");
 
     setUserRating(ratings[movie.id] || 0);
-    setInWatchlist(watchlist.includes(movie.id));
+
+    setInWatchlist(
+      watchlist.some((item: Movie) => item.id === movie.id)
+    );
   }, [movie]);
 
   function handleRate(value: number) {
@@ -49,16 +52,24 @@ export function MoviePage() {
   function toggleWatchlist() {
     if (!movie) return;
 
-    const watchlist: number[] = JSON.parse(
+    const watchlist: Movie[] = JSON.parse(
       localStorage.getItem("watchlist") || "[]"
     );
 
-    const updatedWatchlist = watchlist.includes(movie.id)
-      ? watchlist.filter((movieId) => movieId !== movie.id)
-      : [...watchlist, movie.id];
+    const exists = watchlist.some(
+      (item) => item.id === movie.id
+    );
 
-    localStorage.setItem("watchlist", JSON.stringify(updatedWatchlist));
-    setInWatchlist(updatedWatchlist.includes(movie.id));
+    const updatedWatchlist = exists
+      ? watchlist.filter((item) => item.id !== movie.id)
+      : [...watchlist, movie];
+
+    localStorage.setItem(
+      "watchlist",
+      JSON.stringify(updatedWatchlist)
+    );
+
+    setInWatchlist(!exists);
   }
 
   function handleReviewSubmit(e: FormEvent) {
