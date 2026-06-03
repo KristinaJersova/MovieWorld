@@ -10,12 +10,14 @@ export const getMovies = async (req: Request, res: Response) => {
       sort = "id",
       order = "asc",
       page = "1",
-      limit = "10",
+      limit = "100",
     } = req.query;
 
-    const pageNumber = Number(page);
-    const limitNumber = Number(limit);
+    const pageNumber = Math.max(Number(page) || 1, 1);
+    const limitNumber = Math.max(Number(limit) || 100, 1);
     const skip = (pageNumber - 1) * limitNumber;
+
+    const safeOrder = order === "desc" ? "desc" : "asc";
 
     const where: any = {
       AND: [
@@ -59,12 +61,12 @@ export const getMovies = async (req: Request, res: Response) => {
       ],
     };
 
-    let orderBy: any = { id: order };
+    let orderBy: any = { id: safeOrder };
 
-    if (sort === "title") orderBy = { title: order };
-    if (sort === "year") orderBy = { year: order };
-    if (sort === "runtime") orderBy = { runtime: order };
-    if (sort === "budget") orderBy = { budget: order };
+    if (sort === "title") orderBy = { title: safeOrder };
+    if (sort === "year") orderBy = { year: safeOrder };
+    if (sort === "runtime") orderBy = { runtime: safeOrder };
+    if (sort === "budget") orderBy = { budget: safeOrder };
 
     const movies = await prisma.movie.findMany({
       where,
@@ -121,8 +123,15 @@ export const getMovieById = async (req: Request, res: Response) => {
 
 export const createMovie = async (req: Request, res: Response) => {
   try {
-    const { title, year, description, runtime, country, budget, directorId } =
-      req.body;
+    const {
+      title,
+      year,
+      description,
+      runtime,
+      country,
+      budget,
+      directorId,
+    } = req.body;
 
     const movie = await prisma.movie.create({
       data: {
@@ -145,8 +154,16 @@ export const createMovie = async (req: Request, res: Response) => {
 export const updateMovie = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
-    const { title, year, description, runtime, country, budget, directorId } =
-      req.body;
+
+    const {
+      title,
+      year,
+      description,
+      runtime,
+      country,
+      budget,
+      directorId,
+    } = req.body;
 
     const movie = await prisma.movie.update({
       where: { id },
