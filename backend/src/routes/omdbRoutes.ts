@@ -70,19 +70,37 @@ router.post(
       const budget =
         Number(data.BoxOffice?.replaceAll("$", "").replaceAll(",", "")) || 0;
 
-      const movie = await prisma.movie.create({
-        data: {
+      const existingMovie = await prisma.movie.findFirst({
+        where: {
           title: data.Title,
           year,
-          description: data.Plot,
-          runtime,
-          country: data.Country,
-          budget,
-          poster: data.Poster !== "N/A" ? data.Poster : null,
-          directorId: director.id,
         },
       });
 
+      const movie = existingMovie
+        ? await prisma.movie.update({
+            where: { id: existingMovie.id },
+            data: {
+              description: data.Plot,
+              runtime,
+              country: data.Country,
+              budget,
+              poster: data.Poster !== "N/A" ? data.Poster : null,
+              directorId: director.id,
+            },
+          })
+        : await prisma.movie.create({
+            data: {
+              title: data.Title,
+              year,
+              description: data.Plot,
+              runtime,
+              country: data.Country,
+              budget,
+              poster: data.Poster !== "N/A" ? data.Poster : null,
+              directorId: director.id,
+            },
+          });
       const genres = data.Genre.split(",").map((g: string) => g.trim());
 
       for (const genreName of genres) {
