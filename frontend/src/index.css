@@ -249,3 +249,85 @@ a {
   text-decoration: underline;
 }
 
+.movie-actions {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rating-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.rating-buttons button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #2c3440;
+  background: #1c2229;
+  color: white;
+  cursor: pointer;
+}
+
+.rating-buttons button:hover,
+.rating-buttons .active-rating {
+  background: #00c030;
+  color: #101418;
+  font-weight: bold;
+}
+
+.watchlist-button {
+  width: fit-content;
+  padding: 12px 16px;
+  background: #1c2229;
+  color: white;
+  border: 1px solid #2c3440;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.watchlist-button:hover {
+  border-color: #00c030;
+}
+
+.review-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 520px;
+}
+
+.review-form textarea {
+  min-height: 120px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #2c3440;
+  background: #101418;
+  color: white;
+  resize: vertical;
+}
+
+.review-form button {
+  width: fit-content;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #00c030;
+  color: #101418;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.reviews-list {
+  margin-top: 12px;
+}
+
+.review-card {
+  background: #1c2229;
+  border: 1px solid #2c3440;
+  border-radius: 8px;
+  padding: 14px;
+  margin-top: 10px;
+}
