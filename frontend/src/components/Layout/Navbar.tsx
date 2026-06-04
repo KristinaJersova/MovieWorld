@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 type User = {
   username: string;
+  role?: string;
 };
 
 export function Navbar() {
@@ -29,11 +30,16 @@ export function Navbar() {
         {token ? (
           <div className="profile-dropdown">
             <button className="profile-button">
-              {user?.username ?? "Profile"}
+              Profile
             </button>
 
             <div className="dropdown-menu">
               <Link to="/profile">Profile</Link>
+
+              {user?.role === "admin" && (
+                <Link to="/admin">Admin Panel</Link>
+              )}
+
               <button onClick={logout}>Logout</button>
             </div>
           </div>

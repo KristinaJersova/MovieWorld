@@ -6,6 +6,7 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";
 import { ProtectedRoute } from "./routes/ProtectedRoute";
+import { AdminPage } from "./pages/AdminPage";
 
 export default function App() {
   return (
@@ -38,6 +39,17 @@ export default function App() {
             <ProtectedRoute>
               <Layout>
                 <ProfilePage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <AdminPage />
               </Layout>
             </ProtectedRoute>
           }
