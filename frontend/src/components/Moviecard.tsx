@@ -6,6 +6,10 @@ type Props = {
 };
 
 export function MovieCard({ movie }: Props) {
+  if (!movie || !movie.id || !movie.title) {
+    return null;
+  }
+
   const rating = movie.ratings?.[0]?.rating?.rating;
   const genres = movie.genres?.map((item) => item.genre.name).join(", ");
 

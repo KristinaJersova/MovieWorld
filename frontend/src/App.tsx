@@ -1,12 +1,16 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+
 import { Layout } from "./components/layout/Layout";
+
 import { FeedPage } from "./pages/FeedPage";
 import { MoviePage } from "./pages/MoviePage";
 import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { ProfilePage } from "./pages/ProfilePage";
-import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { AdminPage } from "./pages/AdminPage";
+import { WatchlistPage } from "./pages/WatchlistPage";
+
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 
 export default function App() {
   return (
@@ -39,6 +43,17 @@ export default function App() {
             <ProtectedRoute>
               <Layout>
                 <ProfilePage />
+              </Layout>
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/watchlist"
+          element={
+            <ProtectedRoute>
+              <Layout>
+                <WatchlistPage />
               </Layout>
             </ProtectedRoute>
           }
