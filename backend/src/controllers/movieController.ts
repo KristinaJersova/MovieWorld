@@ -188,6 +188,22 @@ export const deleteMovie = async (req: Request, res: Response) => {
   try {
     const id = Number(req.params.id);
 
+    await prisma.movieActor.deleteMany({
+      where: { movieId: id },
+    });
+
+    await prisma.movieGenre.deleteMany({
+      where: { movieId: id },
+    });
+
+    await prisma.movieRating.deleteMany({
+      where: { movieId: id },
+    });
+
+    await prisma.movieViewHistory.deleteMany({
+      where: { movieId: id },
+    });
+
     await prisma.movie.delete({
       where: { id },
     });
