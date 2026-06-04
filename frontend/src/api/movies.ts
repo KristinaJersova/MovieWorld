@@ -36,3 +36,13 @@ export async function searchMovies(query: string): Promise<Movie[]> {
     movie.title.toLowerCase().includes(query.toLowerCase())
   );
 }
+
+export async function importMovieFromOmdb(title: string) {
+  const response = await api.post("/omdb/import", { title });
+  return response.data;
+}
+
+export async function deleteMovie(id: number) {
+  const response = await api.delete(`/movies/${id}`);
+  return response.data;
+}
